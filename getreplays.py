@@ -2,7 +2,12 @@ import requests
 import errno
 import os
 import sys
-import urllib.request
+
+def download_to(url, path):
+    r = requests.get(url)
+
+    with open(path, "wb") as f:
+        f.write(r.content)
 
 # Gets the Score Ids from Ripple's API then downloads the corresponding replays
 def getReplays(username, mode):
@@ -32,17 +37,12 @@ def getReplays(username, mode):
 
             # Download Replay
             try:
-                # Create Opener w/ headers
-                opener=urllib.request.build_opener()
-                opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
-                urllib.request.install_opener(opener)
-
                 # URL & File path
                 url = 'https://ripple.moe/web/replays/' + str(scoreId)                
                 local = str(fullfilename)
 
                 # Download
-                urllib.request.urlretrieve(url, local)
+                download_to(url, local)
                 print("Downloading Replay: " + songName + ".osr...")
             except Exception as e:
                 print("ERROR: Could not download file: " + songName + ".osr", e)
