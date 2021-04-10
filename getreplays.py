@@ -2,6 +2,7 @@ import requests
 import errno
 import os
 import sys
+import time
 
 def download_to(url, path):
     r = requests.get(url)
@@ -47,6 +48,7 @@ def getReplays(username, mode):
             except Exception as e:
                 print("ERROR: Could not download file: " + songName + ".osr", e)
                 sys.exit(1)
+            time.sleep(5)
         print("Download Complete.")
         return
     except Exception as e:
